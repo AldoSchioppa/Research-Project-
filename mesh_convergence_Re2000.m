@@ -101,14 +101,14 @@ FOLDERS={'Frequency_Analysis', ...
         'Pressure_Distribution', ...
         'Skin_Friction_Coefficient', ...
         'Von_Kármán_Shedding'};
-%% Time convergence - dx(1) - dt(1) - Benchmark - Kojima et al.
+%% Time convergence - Benchmark - Kojima et al.
 close all
 
 % Store-vectors for checking on convergence in time and space
 STR={};
 CL={};
 
-for ti=1:1:length(Dt)-2
+for ti=1:1:length(Dt)-1
 
 % LIFT
 filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{1},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_L.csv');
@@ -128,10 +128,10 @@ end
 [L_Cl,~,f_Cl] = spod(Cl,[],[],[],Dt(ti));  
 % Plot
 figure 
-loglog(f_Cl*c/V_inf,L_Cl(:,1),'k','LineWidth',2); hold on; grid on; grid minor; xlim([min(f*c/V_inf) max(f*c/V_inf)]);
-xlab=xlabel("$St [-]$"); ylab=ylabel("$|A(St)| \;\;\;\;$"'); 
-set(xlab,'Interpreter', 'latex','FontSize',13); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',13); 
-set(gca,'FontSize',10);
+loglog(f_Cl*c/V_inf,L_Cl(:,1),'k','LineWidth',2); hold on; grid on; xlim([min(f_Cl*c/V_inf) max(f_Cl*c/V_inf)]); 
+xlab=xlabel("$St [-]$"); ylab=ylabel("\textbf{FFT of $C_l$}"); 
+set(xlab,'Interpreter', 'latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',14); 
+set(gca,'FontSize',11);
 title('Lift Frequency Spectrum')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DRAG 
@@ -156,10 +156,10 @@ end
 [L_Cd,~,f_Cd] = spod(Cd,[],[],[],Dt(ti));  
 % Plot
 figure 
-loglog(f_Cd*c/V_inf,L_Cd(:,1),'k','LineWidth',2); hold on; grid on; grid minor; xlim([10^-1 max(f*c/V_inf)-1]);
-xlab=xlabel("$St [-]$"); ylab=ylabel("$|A(St)| \;\;\;\;$"'); 
-set(xlab,'Interpreter', 'latex','FontSize',13); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',13); 
-set(gca,'FontSize',10);
+loglog(f_Cd*c/V_inf,L_Cd(:,1),'k','LineWidth',2); hold on; grid on; grid minor; xlim([10^-1 max(f_Cd*c/V_inf)-1]);
+xlab=xlabel("$St [-]$"); ylab=ylabel("\textbf{FFT of $C_d$}"); 
+set(xlab,'Interpreter', 'latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',14); 
+set(gca,'FontSize',11);
 title('Drag Frequency Spectrum')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VON KÁRMÁN
@@ -178,46 +178,49 @@ end
 % Plot
 hFig=figure;
 movegui(hFig,"north")
-loglog(f_W*c/V_inf,L_W,'k','LineWidth',2); hold on; grid on; grid minor; xlim([min(f*c/V_inf) max(f*c/V_inf)-1]);
-xlab=xlabel("$St [-]$"); ylab=ylabel("$|A(St)| \;\;\;\;$"'); 
-set(xlab,'Interpreter', 'latex','FontSize',13); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',13); 
-set(gca,'FontSize',10);
+loglog(f_W*c/V_inf,L_W,'LineWidth',2); hold on; grid on; xlim([min(f_W*c/V_inf) max(f_W*c/V_inf)-1]); axis square;
+xlab=xlabel("$St [-]$"); ylab=ylabel("\textbf{FFT of velocity}"'); 
+set(xlab,'Interpreter', 'latex','fontweight','bold','FontSize',16); set(ylab,'Interpreter','latex','fontweight','bold','Rotation',90,'FontSize',14); 
+set(gca,'FontSize',11);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pressure_Distrubution
-filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{2},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_p_mean.csv');
-hFig=figure; % Defining image-object
-% hFig.Name=strcat('Pressure distribution. BASE CELL SIZE=',num2str(wake_cell_size(3)),' m. TIME STEP=',num2str(time_step(3)),' s.'); % Image header
-hFig.NumberTitle = 'off'; % Number of figure off.
-movegui(hFig,"east"); % Position on the screen.
-cpplot(filename,p_inf,c,rho_inf,V_inf,true,'both'); hold on; 
-%ZoomPanCallback(hFig);
+% filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{2},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_p_mean.csv');
+% hFig=figure; % Defining image-object
+% % hFig.Name=strcat('Pressure distribution. BASE CELL SIZE=',num2str(wake_cell_size(3)),' m. TIME STEP=',num2str(time_step(3)),' s.'); % Image header
+% hFig.NumberTitle = 'off'; % Number of figure off.
+% movegui(hFig,"east"); % Position on the screen.
+% cpplot(filename,p_inf,c,rho_inf,V_inf,true,'both'); hold on; axis square;
+% %ZoomPanCallback(hFig);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Skin_Friction_Coefficient
-filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{3},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_f_mean.csv');
-hFig=figure;
-hFig.NumberTitle='off';
-movegui(hFig,"west");
-cfplot(filename,c,rho_inf,V_inf,true); 
+% filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{3},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_f_mean.csv');
+% hFig=figure;
+% hFig.NumberTitle='off';
+% movegui(hFig,"west");
+% cfplot(filename,c,rho_inf,V_inf,true); axis square;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Statistical convergence
-hFig=figure;
-hFig.NumberTitle='off';
-movegui(hFig,"center");
-filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{1},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_L.csv');
-% Transient estimation
-transient=8*n_tr(ti);
-statconvergenceplot(filename,50,transient,V_inf,rho_inf,c);
-ZoomPanCallback(hFig);
+% hFig=figure;
+% hFig.NumberTitle='off';
+% movegui(hFig,"center");
+% filename=strcat('D:\ResearchProject_Major\Data\Re2000\',FOLDERS{1},'\M0.85_',STRINGS{1,1},'_',STRINGS{2,ti},'_L.csv');
+% % Transient estimation
+% transient=8*n_tr(ti);
+% statconvergenceplot(filename,50,transient,V_inf,rho_inf,c); axis square;
+% ZoomPanCallback(hFig);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+CL{ti}=mean(Cl);
+end
+
 % Strouhal estraction 
 format long;
 % Vector of Strouhal associated to the maxima
-[~, loc]=max(L_Cd(:,1));
-STR{ti}=f_Cl(loc)*c/V_inf;
-CL{ti}=mean(Cl);
+STR{1}=0.99593;
+STR{2}=1.002;
+STR{3}=0;
 
-end
-%% Re2000_60k_Dt2_FreeStream
+return 
+%% Time convergence - dx(1) - dt() 
 close all
 
 jj=2; % FFT length index. Defining FFT resoultion. Often times equal to the number of samples.

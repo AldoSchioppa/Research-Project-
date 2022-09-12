@@ -81,7 +81,7 @@ dt=Cfl*min_dx/(V_inf+a_inf);
 % Minimum transient time
 tr=L/V_inf;
 %%
-filename='D:\ResearchProject_Major\Data\Re2000\Snapshots_SHOCK\SHOCK_64184.csv';
+filename='D:\ResearchProject_Major\Data\Re2000\Snapshots_SHOCK\SHOCK_105451.csv';
 data=readtable(filename);
 
 display(data.Properties.VariableNames);
@@ -187,19 +187,23 @@ for mi = [1 2] % modes counter
    % the energy content associated to the mi-th modes (at fi-th frequency).
 end
 
+%Note (WAKE) Modes 1 and 2 are a wave pair. This is because POD is a real-valued function.
+%So this means that, in order to produce a propagating wave, a pair of two phase-shifted modes are required,
+%similar to a sine wave - cosine wave pair.
+
 %% Animate the same modes.
 %   Note how all wavepackets travel at approximately the same phase
 %   speed c_ph. The reason is that their streamwise wavenumber k_x changes 
 %   with frequency such that c_ph = omega/k_x is approximately constant.
 figure
-nt=30;
-T=1/f(21);              % period of the 21th frequency
+nt=100;
+T=1/f(2);              % period of the 21th frequency
 time=linspace(0,T,nt);     % animate over one period
 count=1;
 n_f = 2;
 n_m = 2;
 for ti=1:nt
-    for mi = [1 2 3 4]
+    for mi = [1 2]
         for fi = [2 21]
             subplot(n_m,n_f,count)
             pcolor(X,Y,real(squeeze(P(fi,:,:,mi)*exp(2i*pi*f(fi)*time(ti))))), shading interp, axis equal tight, caxis(max(abs(caxis))*[-1 1]); colorbar
@@ -213,6 +217,32 @@ for ti=1:nt
     hold off
     count=1;
 end
+
+%% Plots the mode shape m for visualization purposes:
+m=1;
+fi2=figure('Color','w');
+modeShape=squeeze(U_POD(m,:,:));
+imagesc(x/L,y/H,modeShape);
+caxis([-max(abs(modeShape(:))) max(abs(modeShape(:)))])
+colormap
+xlabel('x/L');
+ylabel('y/H');
+set(gca,'ydir','normal')
+title(['Mode Shape ' num2str(m,'%0.0f')]);
+
+%% Plots the time coefficient matrix V for modes 1 and 2, for visualization purposes:
+TimeCoefficients1=V_POD(:,1);
+TimeCoefficients2=V_POD(:,2);
+TimeCoefficients_m=V_POD(:,m); %For mth mode
+fi3=figure('Color','w');
+plot(t,TimeCoefficients1,'k-'); hold on;
+plot(t,TimeCoefficients2,'b-');
+plot(t,TimeCoefficients_m,'r-');
+legend('Mode 1','Mode 2',['Mode ' num2str(m,'%0.0f')]);
+title('Time Coefficients POD')
+%Note the V matrix for modes 1 and 2 is also a pair of sine waves; confirming the traveling wave behavior of the modes.
+%**However, if one did not have time-resolved snapshots (try that by shuffling the original Vfield_Snapshots matrix)
+%then the U matrix will still pick up the mode shapes, though the V matrix will have little physical significance.
 
 %% Frequency-time analysis.
 %   Computing the mode expansion coefficients of the first nModes modes
@@ -243,4 +273,5 @@ xlabel('t [s]'), ylabel('f [Hz]'), caxis([-0.75 0.75].*caxis)
 % %daspect([100 1 1])
 % title(['frequency-time diagram (sum of first ' num2str(nModes) ' modes, ' num2str(sum(sum(L(:,1:nModes)))/sum(L(:))*100,'%3.1f') '% of energy)'])
 % xlabel('time'), ylabel('frequency'), caxis([0 0.75].*caxis)
+
 

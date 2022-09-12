@@ -88,8 +88,8 @@ if strcmp(surfaces,'both')
     plot(dx_ss,-p_ss,'*','color','k'); hold on; 
     plot(dx_ps,-p_ps,'o','color','r'); grid on; xlim([0 1]); axis tight; hold off
     xlab=xlabel("$\frac{x}{c} [-]$"); ylab = ylabel("$ -C_{p} [-] \;\;\;\;\;\;\;\;\;\;$"); legend_Cp=legend('Suction surface','Pressure surface','Location','southeast');
-    set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',12); set(legend_Cp,'Interpreter','latex','Fontsize',9);
-    set(gca,'FontSize',10);
+    set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',14); set(legend_Cp,'Interpreter','latex','Fontsize',9);
+    set(gca,'FontSize',11);
     ax=gca;
     ax.XLabel.FontSize=15;
     ax.YLabel.FontSize=15;

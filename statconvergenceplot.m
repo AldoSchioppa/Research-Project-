@@ -29,7 +29,7 @@ N=N(1:jj-1);
 % Plot 
 plot(N,w_mean,'.-','MarkerSize',16,'LineWidth',2,'Color','r'); grid on; axis tight; axis([min(N) max(N) min(abs(w_mean)) max(abs(w_mean))]); hold on;
 plot(N,mean(signal)*ones(1,length(N)),'LineWidth',2,'color','k');
-xlab=xlabel("$N [-]$"); ylab=ylabel("$\bar{C}_{l} [-] \;\;\;\;\;$"); legend1=legend('Weighted mean', 'Mean Signal','Location','southeast');
+xlab=xlabel("$N [-]$"); ylab=ylabel("$\bar{C}_{l} [-] \;\;\;\;\;$"); legend1=legend('Weighted mean', 'Mean signal','Location','southeast');
 set(legend1,'Interpreter','latex','FontSize',9); 
 set(xlab,'Interpreter','latex','FontSize',13); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',16)
 set(gca,'FontSize',10);

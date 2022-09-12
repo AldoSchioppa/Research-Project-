@@ -74,7 +74,7 @@ text(0.487,0.1,sprintf('\\leftarrow @%.2f',0.487));
 xline(0.487,'--','Color','k');
 legend off;
 xlab=xlabel("$\frac{x}{c} [-]$"); ylab=ylabel("$ C_{f} [-] \;\;\;\;\;\;\;\;$"); legend_Cp=legend('Suction surface','Pressure surface','Location', 'northeast');
-set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',12); set(legend_Cp,'Interpreter','latex','Fontsize',9);
+set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',14); set(legend_Cp,'Interpreter','latex','Fontsize',9);
 set(gca,'FontSize',10);
 ax=gca;
 ax.XLabel.FontSize=15;
