@@ -66,6 +66,8 @@ str={'M02','M03','M04','M05','M06','M07','M08',...
 %% Re 2000
 Cd=zeros(1,length(str));
 
+figure(1)
+
 for jj=1:length(str)
     filename=strcat('D:\ResearchProject_Major\Data\Re2000\Drag_Divergence\',str{jj},'_D');
     data=readmatrix(filename);
@@ -106,3 +108,46 @@ set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','R
 leg=legend({'$Re_{c}=2000$','Inviscid'},'Orientation','horizontal');
 set(leg,'Interpreter','latex','FontSize',11);
 title('(b)');
+
+%% Pressure distribution for several Mach 
+
+symbol={'diamond','square','^','x','*','o'};
+file_str={'M0.8','M0.85','M0.9','M0.95','M1'};
+figure(2)
+
+lol=subplot(1,2,1);
+for jj=0:length(file_str)-1
+    cpplot(strcat('D:\ResearchProject_Major\Data\Re2000\Pressure_Distribution\',file_str{jj+1},'_p_mean.csv'),p_inf(7+5*jj),c,rho_inf(7+5*jj), ...
+        V_inf(7+5*jj),true,'upper',symbol{jj+1}); hold on; axis square;
+end
+cpplot(strcat('D:\ResearchProject_Major\Data\Re2000\Pressure_Distribution\M0.93_p_mean.csv'),p_inf(20),c,rho_inf(20), ...
+        V_inf(20),true,'upper',symbol{6}); hold on; axis square;
+
+title('(a)');
+leg=legend('M=0.8','M=0.85','M=0.9','M=0.95','M=1','M=0.93','Orientation','horizontal');
+set(leg,'Interpreter','latex','FontSize',11);
+
+subplot(1,2,2)
+for jj=0:length(file_str)-1
+    cfplot(strcat('D:\ResearchProject_Major\Data\Re2000\Skin_Friction_Coefficient\',file_str{jj+1},'_f_mean.csv'),c,rho_inf(7+5*jj),V_inf(7+5*jj) ...
+        ,true,'upper'); hold on; axis square;
+end
+cfplot(strcat('D:\ResearchProject_Major\Data\Re2000\Skin_Friction_Coefficient\M0.93_f_mean.csv'),c,rho_inf(20),V_inf(20) ...
+        ,true,'upper'); axis square; 
+
+title('(b)');
+leg=legend('M=0.8','M=0.85','M=0.9','M=0.95','M=1','M=0.93','Orientation','horizontal');
+set(leg,'Interpreter','latex','FontSize',11);
+
+pos_shock=[0.2,0.212,0.25,0.27,0.3,0.325,0.35,0.38,0.4,0.45,0.4,0.425,0.45,0.55,0.7,0.725,0.75,0.75,0.75,0.75,0.75];
+
+%subplot(2,2,[3,4])
+figure
+plot(M(7:end)',pos_shock,'diamond','color','k'); axis square; grid on; grid minor; 
+xlab=xlabel('$M [-]$'); ylab=ylabel('$\frac{x_s}{c} [-] \;\;\;\;\;\;\;\;$');
+set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',0,'FontSize',18)
+title('(c)');
+
+
+%%
+

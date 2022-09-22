@@ -1,19 +1,19 @@
-function [Cp] = cpplot(filename,p_inf,c,rho_inf,u_inf,dim,surfaces)
+function [Cp] = cpplot(filename,p_inf,c,rho_inf,u_inf,dim,surfaces,symbol)
 
 %%%%%%%%%% Mean pressure coefficient %%%%%%%%%%
 % The function allows the user to clean and plot the pressure coefficient
 % data from Star-CCM+ XY plot tree. The code has been tailored for airfoils
-% geometry being split into LE-Central Body-TE on both suction and pressure
-% surface.
+% geometry being split into LE, Central Body and TE on both suction and pressure
+% surfaces.
 %%%%%%%%%%%%%%%%%
 % INPUT:
 % filename                 : file path.
-% airfoil_coordinates      : Airfoil coordinates.
-% Airfoil                  : Airfoil's name.
 % c                        : Reference length.
+% p_inf                    : Free-stream pressure.
 % u_inf                    : Free-stream velocity.
 % rho_inf                  : Free-stream density.
 % dim                      : True or False. True if the signal is dimensional.
+% surfaces                 : surface to plot.
 %%%%%%%%%%%%%%%%%%
 % OUTPUT:
 % Cp                       : A cell array containg the pressure coefficient both on
@@ -87,7 +87,7 @@ Cp={Cp_minus;Cp_plus};
 if strcmp(surfaces,'both')
     plot(dx_ss,-p_ss,'*','color','k'); hold on; 
     plot(dx_ps,-p_ps,'o','color','r'); grid on; xlim([0 1]); axis tight; hold off
-    xlab=xlabel("$\frac{x}{c} [-]$"); ylab = ylabel("$ -C_{p} [-] \;\;\;\;\;\;\;\;\;\;$"); legend_Cp=legend('Suction surface','Pressure surface','Location','southeast');
+    xlab=xlabel("$\frac{x}{c} [-]$"); ylab = ylabel("$ -C_{p} [-] \;\;\;\;\;\;\;\;\;\;\;\;\;\;$"); legend_Cp=legend('Suction surface','Pressure surface','Location','southeast');
     set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',90,'FontSize',14); set(legend_Cp,'Interpreter','latex','Fontsize',9);
     set(gca,'FontSize',11);
     ax=gca;
@@ -95,13 +95,13 @@ if strcmp(surfaces,'both')
     ax.YLabel.FontSize=15;
     title('Pressure Distribution');
 elseif strcmp(surfaces,'upper') 
-    plot(dx_ss,-p_ss,'o'); hold on;
-    xlab=xlabel("$\frac{x}{c}$"); ylab = ylabel("$ -C_{p}^{-} \;\;\;\;$");  grid on; grid minor; axis tight;
-    set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',0,'FontSize',12); 
-    set(gca,'FontSize',10);
-    ax=gca;
-    ax.XLabel.FontSize=15;
-    ax.YLabel.FontSize=15;
+    plot(dx_ss,-p_ss,symbol,'color','k','MarkerIndices',1:20:length(Cp_minus(:,1))); grid on; xlim([0 1]); axis tight; 
+    set(gca,'FontSize',11);
+    xlab=xlabel("$\frac{x}{c} [-]$"); ylab = ylabel("$ -C_{p}^{-} [-] \;\;\;\;\;\;\;\;\;\;\;\;\;\;$");  grid on; grid minor; axis tight;
+    set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',0,'FontSize',14); 
+%     ax=gca;
+%     ax.XLabel.FontSize=15;
+%     ax.YLabel.FontSize=15;
 else 
     plot(dx_ps,-p_ps,'.-','markersize', 12); hold on;
     xlab=xlabel("$\frac{x}{c}$"); ylab = ylabel("$ -C_{p}^{+} \;\;\;\;$"); 

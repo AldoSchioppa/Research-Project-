@@ -1,4 +1,4 @@
-function [Cf]=cfplot(filename,c,rho_inf,u_inf,dim)
+function [Cf]=cfplot(filename,c,rho_inf,u_inf,dim,surfaces)
 
 %%%%%%%%%% Mean Skin friction coefficient %%%%%%%%%%
 
@@ -66,6 +66,7 @@ Cf_minus=[dx_ss,tau_f_ss];
 Cf={Cf_minus;Cf_plus};
 
 % Set the plot 
+if strcmp(surfaces,'both')
 %Title=strcat('Time-average Cf.');
 plot(dx_ss,tau_f_ss,'-','LineWidth',3); hold on;  % '#D95319'
 plot(dx_ps,tau_f_ps,'-','LineWidth',3); hold on; grid on; grid minor; 
@@ -80,4 +81,21 @@ ax=gca;
 ax.XLabel.FontSize=15;
 ax.YLabel.FontSize=15;
 title('Skin Friction Coefficient Distribution');
+elseif strcmp(surfaces,'upper') 
+    plot(dx_ss,tau_f_ss,'-','LineWidth',2); grid on; xlim([0 1]); axis tight; hold on; 
+    set(gca,'FontSize',11);
+    xlab=xlabel("$\frac{x}{c} [-]$"); ylab = ylabel("$ -C_{f}^{-} [-] \;\;\;\;\;\;\;\;\;$");  grid on; grid minor; axis tight;
+    set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',0,'FontSize',14); 
+%     ax=gca;
+%     ax.XLabel.FontSize=15;
+%     ax.YLabel.FontSize=15;
+else 
+    plot(dx_ps,t_f_ps,'.-','markersize', 12); hold on;
+    xlab=xlabel("$\frac{x}{c} [-]$"); ylab = ylabel("$ -C_{f}^{+} [-]\;\;\;\;$"); 
+    set(xlab,'Interpreter','latex','FontSize',16); set(ylab,'Interpreter','latex','Rotation',0,'FontSize',12);  
+    set(gca,'FontSize',10);
+    ax=gca;
+    ax.XLabel.FontSize=15;
+    ax.YLabel.FontSize=15;
+end
 end
